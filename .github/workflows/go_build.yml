@@ -26,16 +26,20 @@ jobs:
       with:
         go-version: '^1.17' # Adjust as needed for your Go version requirements
     
+    - name: Make Directory Structure
+      run: mkdir -p "output" |
+           mkdir -p "staging"
+
     - name: Build Binary
       run: |
-        GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -ldflags="-X 'main.GitCommitHash=${{ github.sha }}'" -v -o github-replica-${{ matrix.goarch }} github_replica.go
+        GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -ldflags="-X 'main.GitCommitHash=${{ github.sha }}'" -v -o output/github-replica github_replica.go
     
     - name: Install Packaging Tools
       run: sudo apt-get update && sudo apt-get install -y dpkg-dev
     
     - name: Prepare Debian Package Structure
       run: |
-        mkdir -p github-replica-${{ matrix.goarch }}/DEBIAN
+        mkdir -p staging/DEBIAN
         (
           echo "Package:      ${GITHUB_REPO_NAME}"
           echo "Architecture: ${{ matrix.debArch }}"
@@ -45,24 +49,24 @@ jobs:
           echo "Maintainer: Matt Brocklehurst <m@xor.me.uk>
           echo "Description: GitHub Replica Application" 
           echo "Homepage: www.xor.me.uk"
-        ) | tee github-replica-${{ matrix.goarch }}/DEBIAN/control
+        ) | tee staging/DEBIAN/control
 
     - name: Copy Binary to Package Structure
       run: |
-        mkdir -p github-replica-${{ matrix.goarch }}/usr/local/bin
-        cp ./github-replica-${{ matrix.goarch }} github-replica-${{ matrix.goarch }}/usr/local/bin/github-replica
+        mkdir -p staging/usr/local/bin
+        cp output/github-replica staging/usr/local/bin/github-replica
     
     - name: Build Debian Package
       run: |
-        dpkg-deb --build github-replica-${{ matrix.goarch }}
-        mv github-replica-${{ matrix.goarch }}.deb github-replica-${{ matrix.goarch }}-${{ github.sha }}.deb
+        dpkg-deb --build staging 
+        ls
     
     - name: Upload Binary
       uses: actions/upload-artifact@v2
       with:
         name: github-replica-binary-${{ matrix.goarch }}
-        path: ./github-replica-${{ matrix.goarch }}
-    
+        path: ./output/github-replica
+
     - name: Upload .deb Package
       uses: actions/upload-artifact@v2
       with:
