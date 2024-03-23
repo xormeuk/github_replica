@@ -43,7 +43,7 @@ jobs:
         (
           echo "Package:      github_replica"
           echo "Architecture: ${{ matrix.debArch }}"
-          echo "Version:      ${{ github.sha }}"
+          echo "Version:      0.1-${{ github.sha }}"
           echo "Section:      ${SECTION:-misc}"
           echo "Maintainer: Matt Brocklehurst <m@xor.me.uk>"
           echo "Description: GitHub Replica Application" 
