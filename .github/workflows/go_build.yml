@@ -58,7 +58,7 @@ jobs:
     - name: Build Debian Package
       run: |
         dpkg-deb --build staging 
-        ls
+        mv staging.deb ./github-replica-${{ matrix.goarch }}-${{ github.sha }}.deb
     
     - name: Upload Binary
       uses: actions/upload-artifact@v2
