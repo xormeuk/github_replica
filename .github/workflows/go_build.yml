@@ -45,7 +45,6 @@ jobs:
           echo "Architecture: ${{ matrix.debArch }}"
           echo "Version:      ${{ github.sha }}"
           echo "Section:      ${SECTION:-misc}"
-          echo "Architecture: ${DEB_ARCHITECTURE}"
           echo "Maintainer: Matt Brocklehurst <m@xor.me.uk>"
           echo "Description: GitHub Replica Application" 
           echo "Homepage: www.xor.me.uk"
