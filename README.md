@@ -6,9 +6,9 @@ This tool allows you to clone all GitHub repositories for a specified user. It u
 
 # Prerequisites
 
-Go (1.15 or later recommended)
-Git installed and configured on your system
-A GitHub Personal Access Token with the appropriate permissions (at least public_repo for public repositories, repo for full access)
+- Go (1.15 or later recommended)
+- Git installed and configured on your system
+- A GitHub Personal Access Token with the appropriate permissions (at least public_repo for public repositories, repo for full access)
 
 # Installation
 
