@@ -6,15 +6,14 @@ This tool allows you to clone all GitHub repositories for a specified user. It u
 
 # Prerequisites
 
-    Go (1.15 or later recommended)
-    Git installed and configured on your system
-    A GitHub Personal Access Token with the appropriate permissions (at least public_repo for public repositories, repo for full access)
+Go (1.15 or later recommended)
+Git installed and configured on your system
+A GitHub Personal Access Token with the appropriate permissions (at least public_repo for public repositories, repo for full access)
 
 # Installation
 
 ## Binary Download:
-
-    Users can download pre-compiled binaries for their specific architecture (amd64 or arm64) from the Releases section on GitHub. Debian packages (.deb) are also available for both architectures.
+Users can download pre-compiled binaries for their specific architecture (amd64 or arm64) from the Releases section on GitHub. Debian packages (.deb) are also available for both architectures.
 
 ## From Source:
 
