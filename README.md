@@ -21,6 +21,6 @@ This tool allows you to clone all GitHub repositories for a specified user. It u
    export GITHUB_TOKEN='your_github_token_here'
     ```
 
-Run the script with the following command, replacing GITHUB_USERNAME with the username of the GitHub account whose repositories you want to clone, and destination_dir with the path to the directory where the repositories should be cloned.
+Run the script with the following command, replacing destination_dir with the path to the directory where the repositories should be cloned.
 
-go run checkout_all_repo.go GITHUB_USERNAME destination_dir
+go run checkout_all_repo.go destination_dir
