@@ -7,7 +7,7 @@
 
     jobs:
         build-and-package:
-          name: Build and Package
+          name: Build, Package, and Release Go Application
           runs-on: ubuntu-latest
           
           strategy:
@@ -80,7 +80,7 @@
             uses: softprops/action-gh-release@v1
             with:
                 tag_name: ${{ github.ref_name }}
-                name: "Release ${{ github.ref_name }}"
+                name: "Release ${{ github.ref_name }} for ${{ matrix.goarch }}"
                 draft: false
                 prerelease: false
             env:
@@ -96,6 +96,6 @@
           - name: Upload .deb Package to Release
             uses: softprops/action-gh-release@v1
             with:
-                files: output/github-replica-${{ matrix.goarch }}-${{ github.sha }}.deb
+                files: ./github-replica-${{ matrix.goarch }}-${{ github.sha }}.deb
             env:
                 GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
