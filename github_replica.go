@@ -10,6 +10,9 @@ import (
 	"path/filepath"
 )
 
+// only used by CI
+var GitCommitHash string
+
 // Repository represents the minimal data for a GitHub repository we need.
 type Repository struct {
 	Name   string `json:"name"`
@@ -58,6 +61,10 @@ func checkoutRepositories(githubToken, destinationDir string) {
 
 func main() {
 	fmt.Println("GitHub Replica\nMatt Brocklehurst / www.xor.me.uk")
+	// Print the GitCommitHash only if it's set
+	if GitCommitHash != "" {
+		fmt.Printf("Git Commit Hash: %s\n", GitCommitHash)
+	}
 
 	if len(os.Args) != 2 {
 		fmt.Println("Usage: go run github_replica.go <destination_dir>")

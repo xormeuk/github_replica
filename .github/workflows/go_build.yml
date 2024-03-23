@@ -24,8 +24,7 @@ jobs:
       env:
         GOARCH: ${{ matrix.goarch }}
       run: |
-        GOOS=linux GOARCH=${GOARCH} go build -v -o github_replica_${GOARCH} github_replica.go
-      
+        GOOS=linux GOARCH=${GOARCH} go build -ldflags="-X 'main.GitCommitHash=${GITHUB_SHA}'" -v -o github_replica_${GOARCH} github_replica.go
     - name: Archive Binary
       uses: actions/upload-artifact@v2
       with:
