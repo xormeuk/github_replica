@@ -41,7 +41,7 @@ jobs:
       run: |
         mkdir -p staging/DEBIAN
         (
-          echo "Package:      ${GITHUB_REPO_NAME}"
+          echo "Package:      github_replica"
           echo "Architecture: ${{ matrix.debArch }}"
           echo "Version:      ${{ github.sha }}"
           echo "Section:      ${SECTION:-misc}"
