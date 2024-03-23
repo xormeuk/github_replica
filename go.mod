@@ -1,3 +1,3 @@
-module xor.me.uk/checkout_all_repo
+module xor.me.uk/github_replica
 
 go 1.22.1

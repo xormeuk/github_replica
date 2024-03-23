@@ -24,10 +24,10 @@ jobs:
       env:
         GOARCH: ${{ matrix.goarch }}
       run: |
-        GOOS=linux GOARCH=${GOARCH} go build -v -o checkout_all_repo_${GOARCH} checkout_all_repo.go
+        GOOS=linux GOARCH=${GOARCH} go build -v -o githubreplica_${GOARCH} github_replica.go
       
     - name: Archive Binary
       uses: actions/upload-artifact@v2
       with:
-        name: checkout_all_repo-${{ matrix.goarch }}
-        path: ./checkout_all_repo_${{ matrix.goarch }}
+        name: github_replica-${{ matrix.goarch }}
+        path: ./github_replica_${{ matrix.goarch }}
