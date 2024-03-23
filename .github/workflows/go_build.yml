@@ -45,8 +45,8 @@ jobs:
           echo "Maintainer: Matt Brocklehurst <m@xor.me.uk>
           echo "Description: GitHub Replica Application" 
           echo "Homepage: www.xor.me.uk"
-        ) | tee SOURCES/${GITHUB_REPO_NAME}/DEBIAN/control
-        
+        ) | tee github-replica-${{ matrix.goarch }}/DEBIAN/control
+
     - name: Copy Binary to Package Structure
       run: |
         mkdir -p github-replica-${{ matrix.goarch }}/usr/local/bin
