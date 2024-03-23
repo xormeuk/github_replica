@@ -46,7 +46,7 @@ jobs:
           echo "Version:      0.1-${{ github.sha }}"
           echo "Section:      ${SECTION:-misc}"
           echo "Maintainer: Matt Brocklehurst <m@xor.me.uk>"
-          echo "Description: GitHub Replica Application" 
+          echo "Description: GitHub Replica" 
           echo "Homepage: www.xor.me.uk"
         ) | tee staging/DEBIAN/control
 

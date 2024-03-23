@@ -1,0 +1,101 @@
+    name: Build, Package, and Release Go Application
+
+    on:
+        push:
+            tags:
+                - 'v*'
+
+    jobs:
+        build-and-package:
+          name: Build and Package
+          runs-on: ubuntu-latest
+          
+          strategy:
+            matrix:
+              goarch: [amd64, arm64]
+              goos: [linux]
+              include:
+                - goarch: amd64
+                  debArch: amd64
+                - goarch: arm64
+                  debArch: arm64
+          
+          steps:
+          - name: Check out code
+            uses: actions/checkout@v2
+            
+          - name: Set up Go
+            uses: actions/setup-go@v2
+            with:
+              go-version: '^1.17' # Adjust as needed for your Go version requirements
+          
+          - name: Make Directory Structure
+            run: mkdir -p "output" |
+                 mkdir -p "staging"
+      
+          - name: Build Binary
+            run: |
+              GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -ldflags="-X 'main.GitCommitHash=${{ github.sha }}'" -v -o output/github-replica github_replica.go
+          
+          - name: Install Packaging Tools
+            run: sudo apt-get update && sudo apt-get install -y dpkg-dev
+          
+          - name: Prepare Debian Package Structure
+            run: |
+              mkdir -p staging/DEBIAN
+              (
+                echo "Package:      github-replica"
+                echo "Architecture: ${{ matrix.debArch }}"
+                echo "Version:      0.1-${{ github.sha }}"
+                echo "Section:      ${SECTION:-misc}"
+                echo "Maintainer: Matt Brocklehurst <m@xor.me.uk>"
+                echo "Description: GitHub Replica" 
+                echo "Homepage: www.xor.me.uk"
+              ) | tee staging/DEBIAN/control
+      
+          - name: Copy Binary to Package Structure
+            run: |
+              mkdir -p staging/usr/local/bin
+              cp output/github-replica staging/usr/local/bin/github-replica
+          
+          - name: Build Debian Package
+            run: |
+              dpkg-deb --build staging 
+              mv staging.deb ./github-replica-${{ matrix.goarch }}-${{ github.sha }}.deb
+          
+          - name: Upload Binary
+            uses: actions/upload-artifact@v2
+            with:
+              name: github-replica-binary-${{ matrix.goarch }}
+              path: ./output/github-replica
+      
+          - name: Upload .deb Package
+            uses: actions/upload-artifact@v2
+            with:
+              name: github-replica-${{ matrix.goarch }}-${{ github.sha }}.deb
+              path: ./github-replica-${{ matrix.goarch }}-${{ github.sha }}.deb
+      
+          - name: Create GitHub Release
+            id: create_release
+            uses: softprops/action-gh-release@v1
+            with:
+                tag_name: ${{ github.ref_name }}
+                name: "Release ${{ github.ref_name }}"
+                draft: false
+                prerelease: false
+            env:
+                GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
+
+          - name: Upload Binary to Release
+            uses: softprops/action-gh-release@v1
+            with:
+                files: output/github-replica
+            env:
+                GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
+
+          - name: Upload .deb Package to Release
+            uses: softprops/action-gh-release@v1
+            with:
+                files: output/github-replica-${{ matrix.goarch }}-${{ github.sha }}.deb
+            env:
+                GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
