@@ -57,29 +57,18 @@
             run: |
               mkdir -p staging/usr/local/bin
               cp output/github-replica staging/usr/local/bin/github-replica
-          
+              cp output/github-replica ./github-replica-${{ matrix.goarch }}
+
           - name: Build Debian Package
             run: |
               dpkg-deb --build staging 
               mv staging.deb ./github-replica-${{ matrix.goarch }}-${{ github.sha }}.deb
-          
-          - name: Upload Binary
-            uses: actions/upload-artifact@v2
-            with:
-              name: github-replica-binary-${{ matrix.goarch }}
-              path: ./output/github-replica
-      
-          - name: Upload .deb Package
-            uses: actions/upload-artifact@v2
-            with:
-              name: github-replica-${{ matrix.goarch }}-${{ github.sha }}.deb
-              path: ./github-replica-${{ matrix.goarch }}-${{ github.sha }}.deb
-      
+               
           - name: Create GitHub Release
             id: create_release
             uses: softprops/action-gh-release@v1
             with:
-                tag_name: ${{ github.ref_name }}
+                tag_name: ${{ github.ref_name }} 
                 name: "Release ${{ github.ref_name }} for ${{ matrix.goarch }}"
                 draft: false
                 prerelease: false
@@ -89,13 +78,13 @@
           - name: Upload Binary to Release
             uses: softprops/action-gh-release@v1
             with:
-                files: output/github-replica
+                files: ./github-replica-${{ matrix.goarch }}
             env:
                 GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
 
           - name: Upload .deb Package to Release
             uses: softprops/action-gh-release@v1
             with:
-                files: ./github-replica-${{ matrix.goarch }}-${{ github.sha }}.deb
+                files: ./github-replica-${{ matrix.goarch }}.deb
             env:
                 GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
