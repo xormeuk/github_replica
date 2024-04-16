@@ -34,7 +34,7 @@ jobs:
 
     - name: Build Binary
       run: |
-        GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -ldflags="-X 'main.GitCommitHash=${{ github.sha }}'" -v -o output/github-replica github_replica.go
+        GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} go build -ldflags="-X 'main.GitCommitHash=${{ github.sha }}'" -v -o output/github-replica cmd/github_replica/github_replica.go
         
     - name: Upload Binary
       uses: actions/upload-artifact@v2
