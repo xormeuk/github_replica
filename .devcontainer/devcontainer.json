@@ -1,0 +1,15 @@
+{
+  "name": "Go",
+  "image": "golang:latest",
+  "extensions": ["golang.go"],
+  "settings": {
+    "go.useLanguageServer": true
+  },
+  "forwardPorts": [8080],
+  "workspaceFolder": "/workspaces",
+  "runArgs": ["--privileged"],
+  "containerEnv": {
+    "GO111MODULE": "on"
+  }
+}
+
